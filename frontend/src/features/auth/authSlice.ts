@@ -13,11 +13,11 @@ interface User {
 }
 
 interface UserData {
-  name: string;
-  email: string;
-  phoneNumber: string;
-  password: string;
-  confirmPassword: string;
+  name?: string;
+  email?: string;
+  phoneNumber?: string;
+  password?: string;
+  confirmPassword?: string;
 }
 
 // Get user from localStorage
@@ -75,6 +75,39 @@ export const register = createAsyncThunk<
   }
 });
 
+// Login user
+export const login = createAsyncThunk<User, UserData, { rejectValue: string }>(
+  "auth/login",
+  async (userData, thunkAPI) => {
+    try {
+      return await authService.login(userData);
+    } catch (error: unknown) {
+      type AxiosErrorResponse = {
+        response?: {
+          data?: {
+            message?: string;
+          };
+        };
+        message?: string;
+        toString: () => string;
+      };
+
+      const err = error as AxiosErrorResponse;
+
+      const message =
+        (err.response && err.response.data && err.response.data.message) ||
+        err.message ||
+        err.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const logout = createAsyncThunk("auth/logout", async () => {
+  await authService.logout();
+});
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -101,6 +134,26 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload as string;
+        state.user = null;
+      })
+
+      .addCase(login.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        console.log("Register fulfilled payload:", action.payload);
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = action.payload;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload as string;
+        state.user = null;
+      })
+
+      .addCase(logout.fulfilled, (state) => {
         state.user = null;
       });
   },

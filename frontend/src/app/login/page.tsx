@@ -1,6 +1,12 @@
 "use client";
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { FaSignInAlt } from "react-icons/fa";
+import Spinner from "@/componets/Spinner";
+
+import { useAppDispatch, useAppSelector } from "../../../lib/hooks";
+import { toast } from "react-toastify";
+import { login, reset } from "../../features/auth/authSlice";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -9,6 +15,26 @@ export default function Login() {
   });
 
   const { email, password } = formData;
+
+  const dispatch = useAppDispatch();
+
+  const { user, isError, isLoading, isSuccess, message } = useAppSelector(
+    (state) => state.auth
+  );
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess || user) {
+      router.push("/dashboard");
+    }
+
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, dispatch, router]);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((prevState) => ({
@@ -19,7 +45,18 @@ export default function Login() {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const userData = {
+      email,
+      password,
+    };
+
+    dispatch(login(userData));
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="pt-40 w-full flex flex-col items-center">
@@ -51,7 +88,7 @@ export default function Login() {
               id="password"
               name="password"
               value={password}
-              placeholder="Set your password"
+              placeholder="Enter your password"
               onChange={onChange}
             />
           </div>

@@ -7,7 +7,7 @@ import Spinner from "@/componets/Spinner";
 import { useAppDispatch, useAppSelector } from "../../../lib/hooks";
 import { toast } from "react-toastify";
 import { register, reset } from "../../features/auth/authSlice";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -30,17 +30,19 @@ export default function Register() {
     (state) => state.auth
   );
 
+  const router = useRouter();
+
   useEffect(() => {
     if (isError) {
       toast.error(message);
     }
 
     if (isSuccess || user) {
-      <Link href="/" />;
+      router.push("/dashboard");
     }
 
     dispatch(reset());
-  }, [user, isError, isSuccess, message, dispatch]);
+  }, [user, isError, isLoading, isSuccess, message, dispatch, router]);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((prevState) => ({

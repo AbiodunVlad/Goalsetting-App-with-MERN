@@ -15,19 +15,22 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <div>
-      {/* {!hideNavbar && <Navbar />} */}
-      <Navbar />
-      <Provider store={store}>{children}</Provider>;
-      <ToastContainer
-      // position="top-right"
-      // autoClose={3000}
-      // hideProgressBar={false}
-      // newestOnTop={false}
-      // closeOnClick
-      // pauseOnHover
-      // draggable
-      // theme="colored"
-      />
+      <Provider store={store}>
+        {/* {!hideNavbar && <Navbar />} */}
+        <Navbar />
+        {children}
+        <ToastContainer
+        // position="top-right"
+        // autoClose={3000}
+        // hideProgressBar={false}
+        // newestOnTop={false}
+        // closeOnClick
+        // pauseOnHover
+        // draggable
+        // theme="colored"
+        />
+      </Provider>
+      ;
     </div>
   );
 }
