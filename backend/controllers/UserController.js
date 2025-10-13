@@ -53,8 +53,11 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user.id,
       name: user.name,
       email: user.email,
-      phone: user.phoneNumber,
+      phoneNumber: user.phoneNumber,
       token: generateToken(user._id),
+      // password: user.password,
+      // confirmPassword: user.confirmPassword,
+      // message: user.message,
     });
   } else {
     res.status(400);

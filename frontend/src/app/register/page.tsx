@@ -1,16 +1,46 @@
 "use client";
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
+import Spinner from "@/componets/Spinner";
+
+// import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../../lib/hooks";
+import { toast } from "react-toastify";
+import { register, reset } from "../../features/auth/authSlice";
+import Link from "next/link";
 
 export default function Register() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phoneNumber: "",
     password: "",
     confirmPassword: "",
   });
 
-  const { name, email, password, confirmPassword } = formData;
+  const { name, email, password, phoneNumber, confirmPassword } = formData;
+
+  // const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
+  // const { user, isLoading, isError, isSuccess, message } = useSelector(
+  //   (state) => state.auth
+  // );
+  const { user, isLoading, isError, isSuccess, message } = useAppSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess || user) {
+      <Link href="/" />;
+    }
+
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, dispatch]);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((prevState) => ({
@@ -21,7 +51,25 @@ export default function Register() {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match.");
+    } else {
+      const userData = {
+        name,
+        email,
+        phoneNumber,
+        password,
+        confirmPassword,
+      };
+
+      dispatch(register(userData));
+    }
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="pt-40 w-full flex flex-col items-center">
@@ -54,6 +102,18 @@ export default function Register() {
               name="email"
               value={email}
               placeholder="Enter your email"
+              onChange={onChange}
+            />
+          </div>
+
+          <div className="">
+            <input
+              type="text"
+              className="p-3 border border-[#969696] rounded-lg w-full flex items-center focus:outline-none"
+              id="phoneNumber"
+              name="phoneNumber"
+              value={phoneNumber}
+              placeholder="Enter your phone number"
               onChange={onChange}
             />
           </div>
