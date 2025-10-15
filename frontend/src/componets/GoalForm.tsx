@@ -24,7 +24,7 @@ export default function GoalForm() {
   return (
     <section className="flex flex-col items-center sm:w-1/2 w-5/6 mb-5">
       <form onSubmit={onSubmit} className="w-full gap-10 flex flex-col">
-        <div>
+        <div className="">
           <label htmlFor="text">Todo</label>
           <input
             type="text"
@@ -37,7 +37,7 @@ export default function GoalForm() {
           />
         </div>
 
-        <div className="flex flex-col gap-2 w-full">
+        <div className="flex flex-col gap-10 w-full">
           <div className=" w-full">
             <label htmlFor="dateTime">When?</label>
             <input
