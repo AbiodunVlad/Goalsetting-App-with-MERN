@@ -30,7 +30,6 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         // theme="colored"
         />
       </Provider>
-      ;
     </div>
   );
 }
