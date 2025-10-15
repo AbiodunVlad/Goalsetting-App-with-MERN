@@ -6,6 +6,12 @@ import GoalForm from "@/componets/GoalForm";
 import Spinner from "@/componets/Spinner";
 import { getGoals, reset } from "@/features/goals/goalSlice";
 import GoalItem from "@/componets/GoalItem";
+import {
+  FaArrowAltCircleUp,
+  FaArrowCircleUp,
+  FaLongArrowAltUp,
+  FaUps,
+} from "react-icons/fa";
 
 export default function Dashboard() {
   const [isClient, setIsClient] = useState(false);
@@ -59,11 +65,11 @@ export default function Dashboard() {
         <h1 className="flex flex-row text-4xl text-center items-center font-extrabold mb-3">
           Welcome {user && user.name}
         </h1>
-        <p className="text-center">Goals Dashboard</p>
+        <p className="text-center">Todo Dashboard</p>
       </div>
       <GoalForm />
 
-      <section className="">
+      <section className="w-full sm:px-10 px-5">
         {goals.length > 0 ? (
           <div className="w-full gap-5 grid grid-cols-1 md:grid-cols-2">
             {goals.map((goal) => (
@@ -71,7 +77,13 @@ export default function Dashboard() {
             ))}
           </div>
         ) : (
-          <h3>You have not set any goals.</h3>
+          <h3 className="flex flex-col items-center text-center">
+            You have not set anything to be done. <br />{" "}
+            <span className="flex items-center gap-1 text-center">
+              Put it in the field above
+              <FaLongArrowAltUp />{" "}
+            </span>
+          </h3>
         )}
       </section>
     </div>

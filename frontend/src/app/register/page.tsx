@@ -75,7 +75,7 @@ export default function Register() {
 
   return (
     <div className="pt-40 w-full flex flex-col items-center">
-      <section className="flex flex-col mb-10">
+      <section className="flex flex-col mb-10 items-center">
         <h1 className="flex flex-row text-4xl text-center items-center font-extrabold mb-3">
           <FaUser /> Register
         </h1>

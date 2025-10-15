@@ -5,6 +5,8 @@ const API_URL = "http://localhost:5000/api/goals/";
 interface Goal {
   _id?: string;
   text: string;
+  dateTime: string;
+  location: string;
 }
 
 // Create new goal

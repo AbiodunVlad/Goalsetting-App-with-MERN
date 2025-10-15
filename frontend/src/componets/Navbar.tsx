@@ -29,14 +29,14 @@ export default function Navbar() {
   if (!isClient) return null;
 
   return (
-    <div className="bg-blue-200 fixed flex flex-row w-full justify-between p-10 border border-b-[0.1px] border-b-[#cacaca]">
+    <div className="bg-black fixed flex flex-row w-full justify-between items-center p-7 border border-b-[0.1px] border-b-[#cacaca]">
       <div className="">
-        <Link href="/" className="font-extrabold">
-          TodoSetter
+        <Link href="/" className="font-extrabold text-white">
+          TodoList
         </Link>
       </div>
 
-      <ul className="flex flex-row gap-7">
+      <ul className="flex flex-row gap-7 text-white">
         {user ? (
           <li>
             <button onClick={onLogout} className="flex flex-row gap-2">
@@ -44,7 +44,7 @@ export default function Navbar() {
             </button>
           </li>
         ) : (
-          <>
+          <div className="flex sm:flex-row flex-col sm:gap-7 gap-3">
             <li>
               <Link href="/login" className="flex flex-row gap-2">
                 <FaSignInAlt /> Login
@@ -55,7 +55,7 @@ export default function Navbar() {
                 <FaUser /> Register
               </Link>
             </li>
-          </>
+          </div>
         )}
       </ul>
     </div>
